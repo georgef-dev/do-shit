@@ -1,0 +1,69 @@
+inherit_gem:
+  rubocop-shopify: rubocop-cli.yml
+
+inherit_from:
+  - .rubocop.sorbet.yml
+
+require:
+  - rubocop-sorbet
+
+AllCops:
+  Exclude:
+    - gen/template/**/*
+    - vendor/**/*
+    - lib/cli/kit/levenshtein.rb # Vendored
+  NewCops: disable
+
+Style/ClassAndModuleChildren:
+  Exclude:
+    - lib/cli/kit/support/test_helper.rb
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# This doesn't take into account retrying from an exception
+Lint/SuppressedException:
+  Enabled: false
+
+# allow String.new to create mutable strings
+Style/EmptyLiteral:
+  Enabled: false
+
+# allow the use of globals which makes sense in a CLI app like this
+Style/GlobalVars:
+  Enabled: false
+
+# allow using %r{} for regexes
+Style/RegexpLiteral:
+  Enabled: false
+
+# allow readable Dev::Util.begin formatting
+Style/MultilineBlockChain:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+# We heavily manage output on purpose
+Style/GlobalStdStream:
+  Enabled: false
+
+# Sometimes (often) explicit is good
+Style/EmptyElse:
+  Enabled: false
+
+# We make frequent use Open3 methods to run other programs. When passing long command lines, it's useful and informative
+# to place the argument to an option on the same line as its option, eg:
+# Open3.capture3(
+#   'curl',
+#   '-H', 'X-Header: value',
+#   '-o', 'file.txt',
+#   '-L',
+#   'https://example.com/',
+# )
+Layout/MultilineMethodArgumentLineBreaks:
+  Enabled: false
+Layout/MultilineArrayLineBreaks:
+  Enabled: false
+Layout/MultilineHashKeyLineBreaks:
+  Enabled: false

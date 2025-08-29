@@ -1,0 +1,44 @@
+nix: true
+
+up:
+  - packages:
+      - fswatch
+  - ruby
+  - bundler
+
+commands:
+  add-back-ruby:
+    run: bundle lock --add-platform ruby && git commit -a -m 'Add back ruby platform' && git push
+    aliases: [abr]
+  console: irb -I./lib -rcli/kit
+  check:
+    run: 'srb && rake style test'
+    aliases: [ck]
+  test:
+    run: rake test
+    aliases: [t]
+  style:
+    run: rake style
+    aliases: [st]
+  typecheck:
+    run: srb
+    aliases: [tc]
+  watch:
+    aliases: [w]
+    subcommands:
+      style:
+        run: bin/onchange rake style
+        aliases: [st]
+      test:
+        run: bin/onchange rake test
+        aliases: [t]
+      typecheck:
+        run: bin/onchange srb
+        aliases: [tc]
+      check:
+        run: bin/onchange 'srb && rake style test'
+        aliases: [ck]
+fastcheck:
+  Test: bundle exec rake test
+  Style: bundle exec rake style
+  Typecheck: bundle exec srb tc

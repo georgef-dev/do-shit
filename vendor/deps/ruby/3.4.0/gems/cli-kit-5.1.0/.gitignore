@@ -1,0 +1,16 @@
+*.gem
+build
+.vagrant
+.DS_Store
+.bundle
+
+/coverage
+
+.starscope.db
+cscope.out
+tags
+
+.byebug_history
+
+.rubocop-*
+doc
