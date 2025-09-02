@@ -10,8 +10,14 @@ module Ds
 
   autoload(:EntryPoint, 'ds/entry_point')
   autoload(:Commands,   'ds/commands')
+  autoload(:Config,     'ds/config')
 
-  Config = CLI::Kit::Config.new(tool_name: TOOL_NAME)
+  module Utils
+    autoload(:Shell,       'ds/utils/shell')
+    autoload(:GitUtils,    'ds/utils/git_utils')
+    autoload(:AiWorkflow,  'ds/utils/ai_workflow')
+  end
+
   Command = CLI::Kit::BaseCommand
 
   Executor = CLI::Kit::Executor.new(log_file: LOG_FILE)

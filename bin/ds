@@ -1,17 +1,33 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env bash
 
-Encoding.default_external = Encoding::UTF_8
-Encoding.default_internal = Encoding::UTF_8
+# Get the directory where this script is located
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PROJECT_ROOT="$( cd "$SCRIPT_DIR/.." && pwd )"
 
-unshift_path = ->(path) {
-  p = File.expand_path("../../#{path}", __FILE__)
-  $LOAD_PATH.unshift(p) unless $LOAD_PATH.include?(p)
-}
-unshift_path.call('lib')
+# Save current directory to return to it later
+ORIGINAL_DIR="$(pwd)"
 
-require 'bundler/setup'
-require 'ds'
+# Change to project directory to ensure we use the right environment
+cd "$PROJECT_ROOT" || exit 1
 
-exit(Ds::ErrorHandler.call do
-  Ds::EntryPoint.call(ARGV.dup)
-end)
+# Use Ruby 3.4.4 directly if available
+if [ -x "$HOME/.rubies/ruby-3.4.4/bin/ruby" ]; then
+  PATH="$HOME/.rubies/ruby-3.4.4/bin:$PATH"
+  "$HOME/.rubies/ruby-3.4.4/bin/bundle" exec ruby "$PROJECT_ROOT/bin/ds-ruby" "$@"
+  exit_code=$?
+elif command -v chruby &> /dev/null; then
+  # Use chruby if available
+  source /usr/local/share/chruby/chruby.sh 2>/dev/null || source /opt/homebrew/share/chruby/chruby.sh 2>/dev/null
+  chruby ruby-3.4.4
+  bundle exec ruby "$PROJECT_ROOT/bin/ds-ruby" "$@"
+  exit_code=$?
+else
+  # Fallback: try bundle exec and hope for the best
+  echo "Warning: Could not find Ruby 3.4.4. Trying bundle exec..." >&2
+  bundle exec ruby "$PROJECT_ROOT/bin/ds-ruby" "$@"
+  exit_code=$?
+fi
+
+# Return to original directory
+cd "$ORIGINAL_DIR"
+exit $exit_code

@@ -10,5 +10,7 @@ module Ds
     end
 
     register :Help,    'help',    'ds/commands/help'
+    register :Git,     'git',     'ds/commands/git'
+    register :Ai,      'ai',      'ds/commands/ai'
   end
 end

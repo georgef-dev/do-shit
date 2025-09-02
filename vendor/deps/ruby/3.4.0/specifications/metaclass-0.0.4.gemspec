@@ -15,5 +15,5 @@ Gem::Specification.new do |s|
   s.rubygems_version = "2.0.14".freeze
   s.summary = "Adds a metaclass method to all Ruby objects".freeze
 
-  s.installed_by_version = "3.6.9".freeze
+  s.installed_by_version = "3.6.7".freeze
 end

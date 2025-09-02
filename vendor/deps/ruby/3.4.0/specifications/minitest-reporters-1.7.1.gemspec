@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.rubygems_version = "3.4.14".freeze
   s.summary = "Create customizable Minitest output formats".freeze
 
-  s.installed_by_version = "3.6.9".freeze
+  s.installed_by_version = "3.6.7".freeze
 
   s.specification_version = 4
 
