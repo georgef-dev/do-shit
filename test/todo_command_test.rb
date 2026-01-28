@@ -40,6 +40,14 @@ module Ds
       assert_match(/done/, out)
     end
 
+    def test_todo_list_with_invalid_status
+      assert_raises SystemExit do
+        capture_io do
+          TodoList.new.call(['--status=invalid'], 'todo-list')
+        end
+      end
+    end
+
     def test_todo_done_with_valid_id
       out, err = capture_io do
         TodoDone.new.call(['42'], 'todo-done')

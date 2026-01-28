@@ -30,7 +30,7 @@ module Ds
         puts CLI::UI.fmt("{{command:ds todo add}} <description>")
         puts "  Add a new task"
         puts
-        puts CLI::UI.fmt("{{command:ds todo list}} [--status=todo|done]")
+        puts CLI::UI.fmt("{{command:ds todo list}} [--status=todo|done|all]")
         puts "  List tasks (default: all open tasks)"
         puts
         puts CLI::UI.fmt("{{command:ds todo done}} <task-id>")
@@ -60,6 +60,8 @@ module Ds
     end
 
     class TodoList < Ds::Command
+      VALID_STATUSES = ['todo', 'done', 'all']
+
       def call(args, _name)
         # Parse status filter
         status = 'todo' # Default to open tasks
@@ -67,6 +69,13 @@ module Ds
           if arg.start_with?('--status=')
             status = arg.split('=', 2).last
           end
+        end
+        
+        # Validate status value
+        unless VALID_STATUSES.include?(status)
+          puts CLI::UI.fmt("{{red:Error: Invalid status '#{status}'}}")
+          puts "Valid statuses: #{VALID_STATUSES.join(', ')}"
+          exit 1
         end
         
         # TODO: Implement API call to list tasks
