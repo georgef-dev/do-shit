@@ -12,5 +12,6 @@ module Ds
     register :Help,    'help',    'ds/commands/help'
     register :Git,     'git',     'ds/commands/git'
     register :Ai,      'ai',      'ds/commands/ai'
+    register :Todo,    'todo',    'ds/commands/todo'
   end
 end
